@@ -47,14 +47,18 @@ export class JsonSchemaBuilder {
     this.schema = schema == null ? {} as JsonSchema : schema;
   }
 
+  /////////////////////////////////////////////////////////////////////////////
   // Reference
+  /////////////////////////////////////////////////////////////////////////////
 
   $ref(reference: string) {
     this.schema.$ref = reference;
     return this;
   }
 
+  /////////////////////////////////////////////////////////////////////////////
   // Metadata
+  /////////////////////////////////////////////////////////////////////////////
 
   id(id: string) {
     this.schema.id = id;
@@ -317,18 +321,37 @@ export class JsonSchemaBuilder {
     return this;
   }
 
+  /////////////////////////////////////////////////////////////////////////////
   // Generic
+  /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Enumerate the acceptable values
+   *
+   * @param values
+   * @returns
+   */
   'enum'(values: any[]) {
     this.schema.enum = values;
     return this;
   }
 
+  /**
+   * Sets the type of the schema
+   */
   type(type: string | string[]) {
     this.schema.type = type;
     return this;
   }
 
+  /**
+   * Adds the specified type to the schema
+   *
+   * If there is already a type set on the schema then the passed in type
+   * is added to the array of types if it is not already present
+   *
+   * @param type
+   */
   canBeType(type: string) {
     if (!this.schema.type) {
       this.schema.type = type;
@@ -341,36 +364,57 @@ export class JsonSchemaBuilder {
     }
   }
 
+  /**
+   * Adds the "string" type to the schema
+   */
   canBeString() {
     this.canBeType(JsonType.string);
     return this;
   }
 
+  /**
+   * Adds the "integer" type to the schema
+   */
   canBeInteger() {
     this.canBeType(JsonType.integer);
     return this;
   }
 
+  /**
+   * Adds the "number" type to the schema
+   */
   canBeNumber() {
     this.canBeType(JsonType.number);
     return this;
   }
 
+  /**
+   * Adds the "object" type to the schema
+   */
   canBeObject() {
     this.canBeType(JsonType.object);
     return this;
   }
 
+  /**
+   * Adds the "array" type to the schema
+   */
   canBeArray() {
     this.canBeType(JsonType.array);
     return this;
   }
 
+  /**
+   * Adds the "boolean" type to the schema
+   */
   canBeBoolean() {
     this.canBeType(JsonType.boolean);
     return this;
   }
 
+  /**
+   * Adds the "null" type to the schema
+   */
   canBeNull() {
     this.canBeType(JsonType.null);
     return this;
@@ -405,14 +449,6 @@ export class JsonSchemaBuilder {
 
   not(schema: JsonSchema) {
     this.schema.not = schema;
-    return this;
-  }
-
-  viewProperties(props: string[]) {
-    if (!this.schema.viewProperties) {
-      this.schema.viewProperties = [];
-    }
-    props.forEach(prop => this.schema.viewProperties.push(prop));
     return this;
   }
 
