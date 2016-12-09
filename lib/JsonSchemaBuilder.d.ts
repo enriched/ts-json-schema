@@ -160,22 +160,59 @@ export declare class JsonSchemaBuilder {
      */
     property(name: string, schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB): this;
     patternProperty(regex: string, cb: (schemaBuidler: JsonSchemaBuilder) => any): this;
+    /**
+     * Enumerate the acceptable values
+     *
+     * @param values
+     * @returns
+     */
     'enum'(values: any[]): this;
+    /**
+     * Sets the type of the schema
+     */
     type(type: string | string[]): this;
+    /**
+     * Adds the specified type to the schema
+     *
+     * If there is already a type set on the schema then the passed in type
+     * is added to the array of types if it is not already present
+     *
+     * @param type
+     */
     canBeType(type: string): void;
+    /**
+     * Adds the "string" type to the schema
+     */
     canBeString(): this;
+    /**
+     * Adds the "integer" type to the schema
+     */
     canBeInteger(): this;
+    /**
+     * Adds the "number" type to the schema
+     */
     canBeNumber(): this;
+    /**
+     * Adds the "object" type to the schema
+     */
     canBeObject(): this;
+    /**
+     * Adds the "array" type to the schema
+     */
     canBeArray(): this;
+    /**
+     * Adds the "boolean" type to the schema
+     */
     canBeBoolean(): this;
+    /**
+     * Adds the "null" type to the schema
+     */
     canBeNull(): this;
     format(format: string): this;
     allOf(schemas: JsonSchema[]): this;
     anyOf(schemas: JsonSchema[]): this;
     oneOf(schemas: JsonSchema[]): this;
     not(schema: JsonSchema): this;
-    viewProperties(props: string[]): this;
     build(): JsonSchema;
 }
 export declare class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
