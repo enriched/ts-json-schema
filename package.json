@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/enriched/json-schema-builder#readme",
   "dependencies": {
-    "typescript": "^2.1.4"
   },
   "devDependencies": {
+    "typescript": "^2.1.4",
     "chai": "^3.5.0",
     "mocha": "^3.2.0"
   }
