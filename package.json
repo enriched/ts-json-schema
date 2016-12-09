@@ -4,7 +4,9 @@
   "description": "A fluent builder for json schemas",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node_modules/typescript/bin/tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf lib"
   },
   "repository": {
     "type": "git",
@@ -24,5 +26,9 @@
   "homepage": "https://github.com/enriched/json-schema-builder#readme",
   "dependencies": {
     "typescript": "^2.1.4"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
   }
 }
