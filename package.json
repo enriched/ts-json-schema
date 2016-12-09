@@ -1,0 +1,28 @@
+{
+  "name": "json-schema-builder",
+  "version": "1.0.0",
+  "description": "A fluent builder for json schemas",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enriched/json-schema-builder.git"
+  },
+  "keywords": [
+    "json-schema",
+    "json",
+    "schema",
+    "builder"
+  ],
+  "author": "Rich Adams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/enriched/json-schema-builder/issues"
+  },
+  "homepage": "https://github.com/enriched/json-schema-builder#readme",
+  "dependencies": {
+    "typescript": "^2.1.4"
+  }
+}
