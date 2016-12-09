@@ -1,4 +1,4 @@
-import {JsonSchema} from './JsonSchema';
+import { JsonSchema } from './JsonSchema';
 
 /**
  * JSON Schema is ultimately a nested definition system.  The root should always contain the $schema property,
@@ -11,8 +11,9 @@ import {JsonSchema} from './JsonSchema';
 
 export var JSON_SCHEMA_V4 = 'http://json-schema.org/draft-04/schema#';
 
-export const Type = {
+export const JsonType = {
   string: 'string',
+  integer: 'integer',
   number: 'number',
   object: 'object',
   array: 'array',
@@ -323,14 +324,55 @@ export class JsonSchemaBuilder {
     return this;
   }
 
-  type(type: string) {
+  type(type: string | string[]) {
     this.schema.type = type;
     return this;
   }
-  oType(type: string) {
-    this.schema.anyOf = this.schema.anyOf || [];
-    this.schema.anyOf.push({ type: type });
-    this.schema.anyOf.push({ type: 'null' });
+
+  canBeType(type: string) {
+    if (!this.schema.type) {
+      this.schema.type = type;
+    } else if (Array.isArray(this.schema.type)) {
+      if (this.schema.type.indexOf(type) === -1) {
+        this.schema.type.push(type);
+      }
+    } else {
+      this.schema.type = [this.schema.type, type];
+    }
+  }
+
+  canBeString() {
+    this.canBeType(JsonType.string);
+    return this;
+  }
+
+  canBeInteger() {
+    this.canBeType(JsonType.integer);
+    return this;
+  }
+
+  canBeNumber() {
+    this.canBeType(JsonType.number);
+    return this;
+  }
+
+  canBeObject() {
+    this.canBeType(JsonType.object);
+    return this;
+  }
+
+  canBeArray() {
+    this.canBeType(JsonType.array);
+    return this;
+  }
+
+  canBeBoolean() {
+    this.canBeType(JsonType.boolean);
+    return this;
+  }
+
+  canBeNull() {
+    this.canBeType(JsonType.null);
     return this;
   }
 

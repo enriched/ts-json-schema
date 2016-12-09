@@ -8,8 +8,9 @@ import { JsonSchema } from './JsonSchema';
  * }
  */
 export declare var JSON_SCHEMA_V4: string;
-export declare const Type: {
+export declare const JsonType: {
     string: string;
+    integer: string;
     number: string;
     object: string;
     array: string;
@@ -160,8 +161,15 @@ export declare class JsonSchemaBuilder {
     property(name: string, schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB): this;
     patternProperty(regex: string, cb: (schemaBuidler: JsonSchemaBuilder) => any): this;
     'enum'(values: any[]): this;
-    type(type: string): this;
-    oType(type: string): this;
+    type(type: string | string[]): this;
+    canBeType(type: string): void;
+    canBeString(): this;
+    canBeInteger(): this;
+    canBeNumber(): this;
+    canBeObject(): this;
+    canBeArray(): this;
+    canBeBoolean(): this;
+    canBeNull(): this;
     format(format: string): this;
     allOf(schemas: JsonSchema[]): this;
     anyOf(schemas: JsonSchema[]): this;
