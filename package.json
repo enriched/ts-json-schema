@@ -1,6 +1,6 @@
 {
   "name": "json-schema-builder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A fluent builder for json schemas",
   "main": "./lib/index.js",
   "scripts": {
@@ -24,11 +24,10 @@
     "url": "https://github.com/enriched/json-schema-builder/issues"
   },
   "homepage": "https://github.com/enriched/json-schema-builder#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "typescript": "^2.1.4",
     "chai": "^3.5.0",
-    "mocha": "^3.2.0"
+    "mocha": "^3.2.0",
+    "typescript": "^2.1.4"
   }
 }
