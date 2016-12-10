@@ -304,23 +304,6 @@ export class JsonSchemaBuilder {
     return this;
   }
 
-  patternProperty(regex: string, cb: (schemaBuidler: JsonSchemaBuilder) => any) {
-    if (!this.schema.patternProperties) { this.schema.patternProperties = {}; }
-    var schema;
-    if (!this.schema.patternProperties[regex]) {
-      schema = {};
-      this.schema.patternProperties[regex] = schema;
-    } else {
-      schema = this.schema.patternProperties[regex];
-    }
-    if (cb) {
-      var schemaBuilder = new JsonSchemaBuilder(schema);
-      cb(schemaBuilder);
-      schemaBuilder.build();
-    }
-    return this;
-  }
-
   /////////////////////////////////////////////////////////////////////////////
   // Generic
   /////////////////////////////////////////////////////////////////////////////
