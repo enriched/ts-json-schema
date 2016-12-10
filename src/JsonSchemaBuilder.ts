@@ -478,9 +478,9 @@ export class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
 }
 
 export interface SchemaCB {
-  (schemaBuidler: JsonSchemaBuilder): any;
+  (schemaBuidler: JsonSchemaBuilder): void;
 }
 
 export interface PropSchemaCB {
-  (propertyBuilder: JsonSchemaPropertyBuilder): any;
+  (propertyBuilder: JsonSchemaPropertyBuilder): void;
 }

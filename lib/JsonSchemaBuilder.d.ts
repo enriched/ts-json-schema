@@ -159,7 +159,6 @@ export declare class JsonSchemaBuilder {
      * @memberOf JsonSchemaBuilder
      */
     property(name: string, schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB): this;
-    patternProperty(regex: string, cb: (schemaBuidler: JsonSchemaBuilder) => any): this;
     /**
      * Enumerate the acceptable values
      *
@@ -223,8 +222,8 @@ export declare class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
     dependency(dependsOn: string[] | JsonSchema): void;
 }
 export interface SchemaCB {
-    (schemaBuidler: JsonSchemaBuilder): any;
+    (schemaBuidler: JsonSchemaBuilder): void;
 }
 export interface PropSchemaCB {
-    (propertyBuilder: JsonSchemaPropertyBuilder): any;
+    (propertyBuilder: JsonSchemaPropertyBuilder): void;
 }
