@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A fluent builder for json schemas",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "node_modules/typescript/bin/tsc -p .",
     "test": "mocha lib/tests",
