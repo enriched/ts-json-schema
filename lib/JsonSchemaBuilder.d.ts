@@ -148,10 +148,14 @@ export declare class JsonSchemaBuilder {
     /**
      * Genrates a property definition at #/properties/${name}
      *
-     * A JsonSchema can be passed in as the property definition.  The builder in the proceeding callback will operate
-     * on that schema. The passed in schema will replace any previously existing schema for the property.
+     * A JsonSchema can be passed in as the property definition. The builder in
+     * the proceeding callback will operate on that schema. The passed in schema
+     * will replace any previously existing schema for the property.
      *
-     * @param {(string | string[])} path
+     * WARNING: If an empty array is passed in, then the schema being edited is
+     * the current schema
+     *
+     * @param {(string | string[])} path The path to the current property
      * @param {(JsonSchema | PropSchemaCB)} [schema] The schema to use as
      * @param {PropSchemaCB} [cb]
      * @returns
@@ -215,8 +219,8 @@ export declare class JsonSchemaBuilder {
     build(): JsonSchema;
 }
 export declare class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
-    parentSchema: JsonSchema;
-    propertyKey: string;
+    private parentSchema;
+    private propertyKey;
     constructor(property: string, parentSchema: any);
     required(): this;
     dependency(dependsOn: string[] | JsonSchema): void;
