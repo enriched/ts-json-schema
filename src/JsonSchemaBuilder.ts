@@ -281,10 +281,14 @@ export class JsonSchemaBuilder {
   /**
    * Genrates a property definition at #/properties/${name}
    *
-   * A JsonSchema can be passed in as the property definition.  The builder in the proceeding callback will operate
-   * on that schema. The passed in schema will replace any previously existing schema for the property.
+   * A JsonSchema can be passed in as the property definition. The builder in
+   * the proceeding callback will operate on that schema. The passed in schema
+   * will replace any previously existing schema for the property.
    *
-   * @param {(string | string[])} path
+   * WARNING: If an empty array is passed in, then the schema being edited is
+   * the current schema
+   *
+   * @param {(string | string[])} path The path to the current property
    * @param {(JsonSchema | PropSchemaCB)} [schema] The schema to use as
    * @param {PropSchemaCB} [cb]
    * @returns
@@ -296,16 +300,15 @@ export class JsonSchemaBuilder {
     schema?: JsonSchema | PropSchemaCB,
     cb?: PropSchemaCB,
   ) {
-    let propBuilder: JsonSchemaPropertyBuilder;
     let propertyRoot: JsonSchema = this.schema;
-
     let propertyKey: string;
     if (typeof path === 'string') {
       propertyKey = path;
       path = [path];
-    } else {
+    } else if (path.length > 1) {
       propertyKey = path[path.length - 1];
     }
+    const isReferenceToCurrent = path.length === 0;
 
     for (let i = 0; i < path.length; i++) {
       const curentKey = path[i];
@@ -322,13 +325,22 @@ export class JsonSchemaBuilder {
     if (typeof schema === 'function') {
       cb = <PropSchemaCB>schema;
     } else if (schema) {
-      propertyRoot.properties[propertyKey] = schema;
+      if (isReferenceToCurrent) {
+        this.schema = schema;
+      } else {
+        propertyRoot.properties[propertyKey] = schema;
+      }
     }
-    propBuilder = new JsonSchemaPropertyBuilder(propertyKey, propertyRoot);
+    let propBuilder: JsonSchemaPropertyBuilder;
+    if (isReferenceToCurrent) {
+      propBuilder = this as any;
+    } else {
+      propBuilder = new JsonSchemaPropertyBuilder(propertyKey, propertyRoot);
+    }
     if (cb) {
       cb(propBuilder);
+      propBuilder.build();
     }
-    propBuilder.build();
     return this;
   }
 
@@ -475,8 +487,8 @@ export class JsonSchemaBuilder {
 }
 
 export class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
-  parentSchema: JsonSchema;
-  propertyKey: string;
+  private parentSchema: JsonSchema;
+  private propertyKey: string;
 
   constructor(property: string, parentSchema: any) {
     if (!parentSchema.properties) {

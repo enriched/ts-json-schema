@@ -28,7 +28,7 @@ describe('JsonSchemaBuidler', () => {
     builtSchema = new JsonSchemaBuilder()
       .property('id', { type: JsonType.string })
       .title('Example Schema')
-      .canBeObject()
+      .property([], p => p.canBeObject())
       .property('firstName', p => p.canBeString().required())
       .property('lastName', p => p.canBeString())
       .property('lastName', p => p.required())

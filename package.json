@@ -1,6 +1,6 @@
 {
   "name": "ts-json-schema",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A fluent builder for json schemas",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
