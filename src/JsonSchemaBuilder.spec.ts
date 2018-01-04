@@ -1,6 +1,12 @@
 import 'jest';
 
-import { JsonSchema, JsonSchemaBuilder, JsonType } from './';
+import {
+  JsonSchema,
+  JsonSchemaBuilder,
+  JsonType,
+  Format,
+  PropSchemaCB,
+} from './';
 
 const SimpleSchema: JsonSchema = {
   title: 'Example Schema',
@@ -25,13 +31,16 @@ describe('JsonSchemaBuidler', () => {
   let builtSchema: JsonSchema;
   // Create and test the simple schema example
   beforeAll(() => {
+    const requiredCb: PropSchemaCB = p => {
+      console.log(`called the cb`);
+      p.required();
+    };
     builtSchema = new JsonSchemaBuilder()
       .property('id', { type: JsonType.string })
       .title('Example Schema')
       .property([], p => p.canBeObject())
       .property('firstName', p => p.canBeString().required())
-      .property('lastName', p => p.canBeString())
-      .property('lastName', p => p.required())
+      .property('lastName', { type: JsonType.string }, requiredCb)
       .property('city')
       .property('city', p => p.canBeNumber())
       .property('city', {
@@ -43,9 +52,11 @@ describe('JsonSchemaBuidler', () => {
           .canBeInteger()
           .minimum(0),
       )
-      .property(['manager', 'id'], p => p.canBeString().required())
+      .property(['manager', 'id'], { format: Format.uuid }, p =>
+        p.canBeString().required(),
+      )
       .build();
-    // console.log(JSON.stringify(builtSchema, null, 2));
+    console.log(JSON.stringify(builtSchema, null, 2));
   });
 
   it('should have title: "Example Schema"', () => {
