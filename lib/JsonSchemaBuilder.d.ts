@@ -15,7 +15,7 @@ export declare const JsonType: {
     object: string;
     array: string;
     boolean: string;
-    'null': string;
+    null: string;
 };
 export declare const Format: {
     date: string;
@@ -51,7 +51,7 @@ export declare class JsonSchemaBuilder {
      */
     title(title: string): this;
     description(description: string): this;
-    'default'(defaultValue: any): this;
+    default(defaultValue: any): this;
     multipleOf(value: number): this;
     maximum(value: number): this;
     exclusiveMaximum(value: boolean): this;
@@ -165,7 +165,7 @@ export declare class JsonSchemaBuilder {
      * @param values
      * @returns
      */
-    'enum'(values: any[]): this;
+    enum(values: any[]): this;
     /**
      * Sets the type of the schema
      */
