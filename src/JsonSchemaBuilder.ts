@@ -18,8 +18,8 @@ export const JsonType = {
   object: 'object',
   array: 'array',
   boolean: 'boolean',
-  'null': 'null',
-}
+  null: 'null',
+};
 
 export const Format = {
   date: 'date',
@@ -32,10 +32,9 @@ export const Format = {
   regex: 'regex',
   uri: 'uri',
   uuid: 'uuid',
-}
+};
 
 export class JsonSchemaBuilder {
-
   schema: JsonSchema = {};
 
   /**
@@ -44,7 +43,7 @@ export class JsonSchemaBuilder {
    * @param schema
    */
   constructor(schema?: JsonSchema) {
-    this.schema = schema == null ? {} as JsonSchema : schema;
+    this.schema = schema == null ? ({} as JsonSchema) : schema;
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -89,7 +88,7 @@ export class JsonSchemaBuilder {
     return this;
   }
 
-  'default'(defaultValue: any) {
+  default(defaultValue: any) {
     this.schema.default = defaultValue;
     return this;
   }
@@ -263,7 +262,9 @@ export class JsonSchemaBuilder {
    * @returns
    */
   definition(name: string, cb?: SchemaCB) {
-    if (!this.schema.definitions) { this.schema.definitions = {}; }
+    if (!this.schema.definitions) {
+      this.schema.definitions = {};
+    }
     var definition;
     if (!this.schema.definitions[name]) {
       definition = {};
@@ -271,7 +272,9 @@ export class JsonSchemaBuilder {
     } else {
       definition = this.schema.definitions[name];
     }
-    if (cb) { cb(new JsonSchemaBuilder(definition)); }
+    if (cb) {
+      cb(new JsonSchemaBuilder(definition));
+    }
     return this;
   }
 
@@ -281,22 +284,42 @@ export class JsonSchemaBuilder {
    * A JsonSchema can be passed in as the property definition.  The builder in the proceeding callback will operate
    * on that schema. The passed in schema will replace any previously existing schema for the property.
    *
-   * @param {string} name
+   * @param {(string | string[])} path
    * @param {(JsonSchema | PropSchemaCB)} [schema] The schema to use as
    * @param {PropSchemaCB} [cb]
    * @returns
    *
    * @memberOf JsonSchemaBuilder
    */
-  property(name: string, schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB) {
+  property(
+    path: string | string[],
+    schema?: JsonSchema | PropSchemaCB,
+    cb?: PropSchemaCB,
+  ) {
     var propBuilder: JsonSchemaPropertyBuilder;
+    let rootSchema: JsonSchema = this.schema;
+    let rootSchemaProperty: string;
+    if (Array.isArray(path)) {
+      rootSchemaProperty = path[path.length - 1];
+      for (let i = 1; i < path.length; i++) {
+        const propPath = path[i - 1];
+        if (!rootSchema.properties) {
+          rootSchema.properties = {};
+        }
+        if (!rootSchema.properties[propPath]) {
+          rootSchema.properties[propPath] = {};
+        }
+        rootSchema = rootSchema.properties[propPath];
+      }
+    } else {
+      rootSchemaProperty = path;
+    }
     if (typeof schema === 'function') {
       cb = <PropSchemaCB>schema;
     } else if (schema) {
-      this.schema.properties = this.schema.properties || {};
-      this.schema.properties[name] = schema;
+      rootSchema.properties[rootSchemaProperty] = schema;
     }
-    propBuilder = new JsonSchemaPropertyBuilder(name, this.schema);
+    propBuilder = new JsonSchemaPropertyBuilder(rootSchemaProperty, rootSchema);
     if (cb) {
       cb(propBuilder);
     }
@@ -314,7 +337,7 @@ export class JsonSchemaBuilder {
    * @param values
    * @returns
    */
-  'enum'(values: any[]) {
+  enum(values: any[]) {
     this.schema.enum = values;
     return this;
   }
@@ -413,19 +436,25 @@ export class JsonSchemaBuilder {
   /////////////////////////////////////////////////////////////////////////////
 
   allOf(schemas: JsonSchema[]) {
-    if (!this.schema.allOf) { this.schema.allOf = []; }
+    if (!this.schema.allOf) {
+      this.schema.allOf = [];
+    }
     this.schema.allOf = this.schema.allOf.concat(schemas);
     return this;
   }
 
   anyOf(schemas: JsonSchema[]) {
-    if (!this.schema.anyOf) { this.schema.anyOf = []; }
+    if (!this.schema.anyOf) {
+      this.schema.anyOf = [];
+    }
     this.schema.anyOf = this.schema.anyOf.concat(schemas);
     return this;
   }
 
   oneOf(schemas: JsonSchema[]) {
-    if (!this.schema.oneOf) { this.schema.oneOf = []; }
+    if (!this.schema.oneOf) {
+      this.schema.oneOf = [];
+    }
     this.schema.oneOf = this.schema.oneOf.concat(schemas);
     return this;
   }
@@ -441,12 +470,14 @@ export class JsonSchemaBuilder {
 }
 
 export class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
-
   parentSchema: JsonSchema;
   propertyKey: string;
 
   constructor(property: string, parentSchema: any) {
-    if (!parentSchema.properties) { parentSchema.properties = {}; }
+    console.log(property);
+    if (!parentSchema.properties) {
+      parentSchema.properties = {};
+    }
     var thisSchema;
     if (!parentSchema.properties[property]) {
       thisSchema = {};
@@ -460,17 +491,25 @@ export class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
   }
 
   required() {
-    if (!this.parentSchema.required) { this.parentSchema.required = []; }
+    if (!this.parentSchema.required) {
+      this.parentSchema.required = [];
+    }
     this.parentSchema.required.push(this.propertyKey);
     return this;
   }
 
   dependency(dependsOn: string[] | JsonSchema) {
     var property = this.propertyKey;
-    if (!this.parentSchema.dependencies) { this.parentSchema.dependencies = {}; }
+    if (!this.parentSchema.dependencies) {
+      this.parentSchema.dependencies = {};
+    }
     if (dependsOn instanceof Array) {
-      if (!this.parentSchema.dependencies[property]) { this.parentSchema.dependencies[property] = []; }
-      (this.parentSchema.dependencies[property] as Array<string>).concat(dependsOn);
+      if (!this.parentSchema.dependencies[property]) {
+        this.parentSchema.dependencies[property] = [];
+      }
+      (this.parentSchema.dependencies[property] as Array<string>).concat(
+        dependsOn,
+      );
     } else {
       this.parentSchema.dependencies[property] = dependsOn;
     }

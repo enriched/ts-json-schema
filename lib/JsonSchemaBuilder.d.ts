@@ -151,14 +151,14 @@ export declare class JsonSchemaBuilder {
      * A JsonSchema can be passed in as the property definition.  The builder in the proceeding callback will operate
      * on that schema. The passed in schema will replace any previously existing schema for the property.
      *
-     * @param {string} name
+     * @param {(string | string[])} path
      * @param {(JsonSchema | PropSchemaCB)} [schema] The schema to use as
      * @param {PropSchemaCB} [cb]
      * @returns
      *
      * @memberOf JsonSchemaBuilder
      */
-    property(name: string, schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB): this;
+    property(path: string | string[], schema?: JsonSchema | PropSchemaCB, cb?: PropSchemaCB): this;
     /**
      * Enumerate the acceptable values
      *
