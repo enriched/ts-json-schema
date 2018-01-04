@@ -26,6 +26,7 @@ describe('JsonSchemaBuidler', () => {
   // Create and test the simple schema example
   beforeAll(() => {
     builtSchema = new JsonSchemaBuilder()
+      .property('id', { type: JsonType.string })
       .title('Example Schema')
       .canBeObject()
       .property('firstName', p => p.canBeString().required())
@@ -34,7 +35,7 @@ describe('JsonSchemaBuidler', () => {
       .property('city')
       .property('city', p => p.canBeNumber())
       .property('city', {
-        type: JsonType.string
+        type: JsonType.string,
       })
       .property('age', p =>
         p
@@ -77,8 +78,10 @@ describe('JsonSchemaBuidler', () => {
   });
 
   it('should have manager with id property', () => {
-    expect(builtSchema.properties.manager.properties.id.type).toEqual(JsonType.string);
-  })
+    expect(builtSchema.properties.manager.properties.id.type).toEqual(
+      JsonType.string,
+    );
+  });
 
   it('should have first and last name in the required array', () => {
     expect(builtSchema.required).toContain('firstName');
