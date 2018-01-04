@@ -305,7 +305,7 @@ export class JsonSchemaBuilder {
     if (typeof path === 'string') {
       propertyKey = path;
       path = [path];
-    } else if (path.length > 1) {
+    } else if (path.length > 0) {
       propertyKey = path[path.length - 1];
     }
     const isReferenceToCurrent = path.length === 0;
