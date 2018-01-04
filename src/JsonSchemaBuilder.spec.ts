@@ -44,7 +44,7 @@ describe('JsonSchemaBuidler', () => {
       )
       .property(['manager', 'id'], p => p.canBeString().required())
       .build();
-    console.log(JSON.stringify(builtSchema, null, 2));
+    // console.log(JSON.stringify(builtSchema, null, 2));
   });
 
   it('should have title: "Example Schema"', () => {
