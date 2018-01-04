@@ -474,7 +474,6 @@ export class JsonSchemaPropertyBuilder extends JsonSchemaBuilder {
   propertyKey: string;
 
   constructor(property: string, parentSchema: any) {
-    console.log(property);
     if (!parentSchema.properties) {
       parentSchema.properties = {};
     }
