@@ -296,30 +296,35 @@ export class JsonSchemaBuilder {
     schema?: JsonSchema | PropSchemaCB,
     cb?: PropSchemaCB,
   ) {
-    var propBuilder: JsonSchemaPropertyBuilder;
-    let rootSchema: JsonSchema = this.schema;
-    let rootSchemaProperty: string;
-    if (Array.isArray(path)) {
-      rootSchemaProperty = path[path.length - 1];
-      for (let i = 1; i < path.length; i++) {
-        const propPath = path[i - 1];
-        if (!rootSchema.properties) {
-          rootSchema.properties = {};
-        }
-        if (!rootSchema.properties[propPath]) {
-          rootSchema.properties[propPath] = {};
-        }
-        rootSchema = rootSchema.properties[propPath];
-      }
+    let propBuilder: JsonSchemaPropertyBuilder;
+    let propertyRoot: JsonSchema = this.schema;
+
+    let propertyKey: string;
+    if (typeof path === 'string') {
+      propertyKey = path;
+      path = [path];
     } else {
-      rootSchemaProperty = path;
+      propertyKey = path[path.length - 1];
+    }
+
+    for (let i = 0; i < path.length; i++) {
+      const curentKey = path[i];
+      if (!propertyRoot.properties) {
+        propertyRoot.properties = {};
+      }
+      if (!propertyRoot.properties[curentKey]) {
+        propertyRoot.properties[curentKey] = {};
+      }
+      if (i < path.length - 1) {
+        propertyRoot = propertyRoot.properties[curentKey];
+      }
     }
     if (typeof schema === 'function') {
       cb = <PropSchemaCB>schema;
     } else if (schema) {
-      rootSchema.properties[rootSchemaProperty] = schema;
+      propertyRoot.properties[propertyKey] = schema;
     }
-    propBuilder = new JsonSchemaPropertyBuilder(rootSchemaProperty, rootSchema);
+    propBuilder = new JsonSchemaPropertyBuilder(propertyKey, propertyRoot);
     if (cb) {
       cb(propBuilder);
     }
